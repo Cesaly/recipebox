@@ -1,0 +1,10 @@
+<h1>This is {{ author.name }}'s page</h1>
+
+<ul>
+    {% for r in data %}
+        <li>
+            <a href='/{{r.id}}'>{{ r.title }}</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="/">Home</a>

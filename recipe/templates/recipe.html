@@ -1,0 +1,15 @@
+<h1>This is recipe page</h1>
+
+<ul>
+        <li>
+             {{data.title}} | by <a href='/author/{{data.author.id}}'>{{ data.author.name }} </a>
+            <ul>
+                <li>
+                    {{ data.description }} <br/>
+                    {{ data.time_required }} <br/>
+                    {{ data.instructions }}
+                </li>
+            </ul>
+        </li>
+</ul>
+<a href="/">Home</a>
