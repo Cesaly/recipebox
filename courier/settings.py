@@ -26,8 +26,6 @@ SECRET_KEY = 'z1!c&+b*+8pp2%6(qzcj^f=9(^wv^uo2!vghcz9i^+q4a0g-=1'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
-LOGIN_URL = '/login'
 # Application definition
 
 INSTALLED_APPS = [
@@ -119,3 +117,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/'
