@@ -1,6 +1,8 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
 
 from recipe.models import RecipeItem, Author
 from recipe.forms import RecipeAddForm, AuthorAddForm, LoginForm
@@ -17,7 +19,7 @@ def loginview(request):
                                 password=data['password'])
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse('homepage'))
+                return HttpResponseRedirect(request.GET.get('next', '/'))
     form = LoginForm()
     return render(request, 'generic_form.html', {'form': form})
 
@@ -40,7 +42,7 @@ def recipeadd(request):
         form = RecipeAddForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            RecipeItem.object.Create(
+            RecipeItem.objects.create(
                 title=data['title'],
                 description=data['description'],
                 author=data['author']
@@ -52,12 +54,19 @@ def recipeadd(request):
     return render(request, html, {"form": form})
 
 
+@staff_member_required
 def authoradd(request):
     html = "generic_form.html"
 
     if request.method == 'POST':
         form = AuthorAddForm(request.POST)
-        form.save()
+        new_author = form.save(commit=False)
+        new_user = User.objects.create_user(
+                username=new_author.name,
+                password='welcome1',
+            )
+        new_author.user = new_user
+        new_author.save()
         return HttpResponseRedirect(reverse('homepage'))
 
     form = AuthorAddForm()
